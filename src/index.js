@@ -19,6 +19,10 @@ class PhoneBook extends React.Component {
     filter: '',
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log('komponent zostal zaktualizowany');
+  }
+
   copyContacts = this.state.contacts;
 
   handleChange = event => {
