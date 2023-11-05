@@ -22,29 +22,19 @@ class PhoneBook extends React.Component {
   componentDidMount() {
     const contactsJSON = localStorage.getItem('contacts');
     const contacts = JSON.parse(contactsJSON);
-    this.setState({ contacts: contacts });
 
-    if (contacts === null) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    if (contacts) {
+      this.setState({ contacts });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     console.log('komponent zostal zaktualizowany');
 
-    let i = 0;
-
-    this.state.contacts.map(value => {
-      if (value === prevState.contacts[i]) {
-        console.log(`wartosc ${value.id} jest w prevState`);
-      } else {
-        console.log(`nie ma wartosci ${value.id} w prevState`);
-        const objectValue = value;
-        const objectValueJSON = JSON.stringify(value);
-      }
-
-      i += 1;
-    });
+    if (prevState.contacts !== this.state.contacts) {
+      const contactsJSON = JSON.stringify(this.state.contacts);
+      localStorage.setItem('contacts', contactsJSON);
+    }
   }
 
   copyContacts = this.state.contacts;
@@ -97,7 +87,10 @@ class PhoneBook extends React.Component {
   handleDeleteContact = id => {
     const { contacts } = this.state;
     const updateContacts = contacts.filter(contact => contact.id !== id);
-    this.setState({ contacts: updateContacts });
+    this.setState({ contacts: updateContacts }, () => {
+      const contactsJSON = JSON.stringify(this.state.contacts);
+      localStorage.setItem('contacts', contactsJSON);
+    });
   };
 
   render() {
