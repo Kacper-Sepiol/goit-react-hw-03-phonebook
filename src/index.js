@@ -29,6 +29,24 @@ class PhoneBook extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log('komponent zostal zaktualizowany');
+
+    let i = 0;
+
+    this.state.contacts.map(value => {
+      if (value === prevState.contacts[i]) {
+        console.log(`wartosc ${value.id} jest w prevState`);
+      } else {
+        console.log(`nie ma wartosci ${value.id} w prevState`);
+        const objectValue = value;
+        const objectValueJSON = JSON.stringify(value);
+      }
+
+      i += 1;
+    });
+  }
+
   copyContacts = this.state.contacts;
 
   handleChange = event => {
